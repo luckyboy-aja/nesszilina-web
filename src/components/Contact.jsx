@@ -6,18 +6,35 @@ export default function Contact() {
     useScrollReveal();
     const [formStatus, setFormStatus] = useState("idle"); // idle, submitting, success, error
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setFormStatus("submitting");
 
-        // Simulate form submission
-        setTimeout(() => {
-            setFormStatus("success");
-            e.target.reset();
+        const formData = new FormData(e.target);
+        formData.append("access_key", "22522cab-cd3e-4231-be6c-ac4fe6e6b10d");
+        formData.append("subject", "Nová správa z webu nesszilina.sk");
+        formData.append("from_name", "NESS Žilina Web");
 
-            // Reset status after a few seconds
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                setFormStatus("success");
+                e.target.reset();
+                setTimeout(() => setFormStatus("idle"), 5000);
+            } else {
+                setFormStatus("error");
+                setTimeout(() => setFormStatus("idle"), 5000);
+            }
+        } catch (err) {
+            console.error("Chyba pri odosielaní:", err);
+            setFormStatus("error");
             setTimeout(() => setFormStatus("idle"), 5000);
-        }, 1500);
+        }
     };
 
     return (
@@ -58,17 +75,17 @@ export default function Contact() {
                     <form className="contact-form" onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="name">Meno / Spoločnosť</label>
-                            <input type="text" id="name" required placeholder="Vaše meno" />
+                            <input type="text" id="name" name="name" required placeholder="Vaše meno" />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" required placeholder="vas@email.sk" />
+                            <input type="email" id="email" name="email" required placeholder="vas@email.sk" />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="message">Správa / Požiadavka</label>
-                            <textarea id="message" rows="5" required placeholder="Ako vám môžeme pomôcť?"></textarea>
+                            <textarea id="message" name="message" rows="5" required placeholder="Ako vám môžeme pomôcť?"></textarea>
                         </div>
 
                         <button
