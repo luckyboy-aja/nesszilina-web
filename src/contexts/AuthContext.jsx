@@ -65,17 +65,33 @@ export function AuthProvider({ children }) {
             return Promise.reject(new Error("Firebase is not configured yet."));
         }
 
-        // Use secondary auth to prevent switching sessions
-        const result = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+        let result;
+        try {
+            // Try creating a new auth account using secondary auth
+            result = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+        } catch (err) {
+            if (err.code === "auth/email-already-in-use") {
+                // Account exists in Auth but was removed from Firestore (soft-deleted)
+                // Try signing in with the provided password to re-activate
+                try {
+                    result = await signInWithEmailAndPassword(secondaryAuth, email, password);
+                } catch (signInErr) {
+                    await signOut(secondaryAuth).catch(() => { });
+                    throw new Error("Tento email už existuje v systéme s iným heslom. Použite tlačidlo 🔑 na reset hesla, alebo zvoľte iný email.");
+                }
+            } else {
+                throw err;
+            }
+        }
 
-        // Store user info in Firestore
+        // Store/restore user info in Firestore
         await setDoc(doc(db, "admins", result.user.uid), {
             email: email,
             createdAt: serverTimestamp(),
             createdBy: currentUser?.email || "unknown"
         });
 
-        // Sign out from secondary auth 
+        // Sign out from secondary auth
         await signOut(secondaryAuth);
 
         return result;
