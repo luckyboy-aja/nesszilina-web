@@ -5,11 +5,13 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/admin/Dashboard";
+import Analytics from "./components/Analytics";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <Analytics />
         <Routes>
           {/* Public Routes with Navbar and Footer */}
           <Route path="/" element={<Layout />}>
