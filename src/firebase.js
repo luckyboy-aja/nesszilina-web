@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, browserLocalPersistence, setPersistence } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // Replace with your app's Firebase project configuration from Vercel/env
 const firebaseConfig = {
@@ -11,13 +12,18 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-let app, auth, googleProvider;
+let app, auth, googleProvider, db, secondaryApp, secondaryAuth;
 
 // Prevent React from crashing entirely (white screen) if the `.env` vars are not set
 if (firebaseConfig.apiKey) {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
+  db = getFirestore(app);
+
+  // Secondary app for creating users without switching main auth session
+  secondaryApp = initializeApp(firebaseConfig, "secondary");
+  secondaryAuth = getAuth(secondaryApp);
 
   // Set persistence
   setPersistence(auth, browserLocalPersistence).catch(console.error);
@@ -26,6 +32,9 @@ if (firebaseConfig.apiKey) {
   // Provide dummy mock objects so destructuring doesn't crash the AuthContext
   auth = { currentUser: null };
   googleProvider = {};
+  db = {};
+  secondaryAuth = {};
 }
 
-export { app, auth, googleProvider };
+export { app, auth, googleProvider, db, secondaryAuth };
+

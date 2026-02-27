@@ -2,10 +2,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logout, isSuperAdmin } = useAuth();
     const navigate = useNavigate();
-
-    const isSuperAdmin = currentUser?.email === "andrej.bosik@gmail.com";
 
     const handleLogout = async () => {
         try {
