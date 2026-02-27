@@ -21,12 +21,21 @@ export function AuthProvider({ children }) {
             return Promise.reject(new Error("Firebase is not configured yet."));
         }
 
-        const result = await signInWithPopup(auth, googleProvider);
+        let result;
+        try {
+            result = await signInWithPopup(auth, googleProvider);
+        } catch (err) {
+            // User closed the popup or cancelled — don't show an error
+            if (err.code === "auth/popup-closed-by-user" || err.code === "auth/cancelled-popup-request") {
+                return null;
+            }
+            throw err;
+        }
 
         // Security check: Only allow specific email for Google login
         if (result.user.email !== allowedAdminEmail) {
             await logout();
-            throw new Error(`Google prihlásenie je povolené len pre ${allowedAdminEmail}. Pre ostatné účty použite prihlásenie heslom.`);
+            throw new Error("Google prihlásenie je povolené len pre určeného superadministrátora. Pre ostatné účty použite prihlásenie heslom.");
         }
 
         return result;

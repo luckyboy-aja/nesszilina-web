@@ -20,11 +20,11 @@ export default function Login() {
         try {
             setError("");
             setLoading(true);
-            await loginWithGoogle();
+            const result = await loginWithGoogle();
+            if (!result) return; // Popup was closed, do nothing
             navigate("/admin");
         } catch (err) {
             console.error(err);
-            // Zobraziť konkrétnu chybovú hlášku z AuthContext ak existuje
             setError(err.message || "Nepodarilo sa prihlásiť cez Google. Skúste to znova.");
         } finally {
             setLoading(false);
