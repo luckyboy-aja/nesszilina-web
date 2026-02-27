@@ -57,7 +57,7 @@ export default function UsersManagement() {
             await loadUsers();
         } catch (err) {
             console.error("Chyba pri vytváraní používateľa:", err);
-            let errorMessage = "Nepodarilo sa vytvoriť účet. Skúste to znova.";
+            let errorMessage = err.message || "Nepodarilo sa vytvoriť účet. Skúste to znova.";
             if (err.code === "auth/email-already-in-use") {
                 errorMessage = "Tento email sa už používa.";
             } else if (err.code === "auth/weak-password") {
