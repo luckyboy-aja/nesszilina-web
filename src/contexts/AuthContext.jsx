@@ -77,7 +77,9 @@ export function AuthProvider({ children }) {
                     result = await signInWithEmailAndPassword(secondaryAuth, email, password);
                 } catch (signInErr) {
                     await signOut(secondaryAuth).catch(() => { });
-                    throw new Error("Tento email už existuje v systéme s iným heslom. Použite tlačidlo 🔑 na reset hesla, alebo zvoľte iný email.");
+                    // Send password reset email so the user can be re-created
+                    await sendPasswordResetEmail(auth, email).catch(() => { });
+                    throw new Error(`Tento email už existuje s iným heslom. Na adresu ${email} bol odoslaný email na reset hesla. Po resetovaní hesla skúste účet vytvoriť znova s novým heslom.`);
                 }
             } else {
                 throw err;
