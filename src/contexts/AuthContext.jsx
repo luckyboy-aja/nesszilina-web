@@ -16,14 +16,26 @@ export function AuthProvider({ children }) {
     const allowedAdminEmail = "andrej.bosik@gmail.com";
 
     function loginWithGoogle() {
+        if (!auth || !auth.name) {
+            return Promise.reject(new Error("Firebase is not configured yet."));
+        }
         return signInWithPopup(auth, googleProvider);
     }
 
     function logout() {
+        if (!auth || !auth.name) {
+            return Promise.resolve();
+        }
         return signOut(auth);
     }
 
     useEffect(() => {
+        // Mock auth object check
+        if (!auth || !auth.name) {
+            setLoading(false);
+            return;
+        }
+
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
             setLoading(false);
