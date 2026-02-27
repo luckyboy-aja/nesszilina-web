@@ -4,8 +4,10 @@ import { useState } from "react";
 import "./Login.css";
 
 export default function Login() {
-    const { loginWithGoogle, currentUser } = useAuth();
+    const { loginWithGoogle, loginWithEmail, currentUser } = useAuth();
     const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -22,7 +24,23 @@ export default function Login() {
             navigate("/admin");
         } catch (err) {
             console.error(err);
-            setError("Nepodarilo sa prihlásiť cez Google. Skúste to znova.");
+            // Zobraziť konkrétnu chybovú hlášku z AuthContext ak existuje
+            setError(err.message || "Nepodarilo sa prihlásiť cez Google. Skúste to znova.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleEmailSignIn = async (e) => {
+        e.preventDefault();
+        try {
+            setError("");
+            setLoading(true);
+            await loginWithEmail(email, password);
+            navigate("/admin");
+        } catch (err) {
+            console.error(err);
+            setError("Nesprávny email alebo heslo.");
         } finally {
             setLoading(false);
         }
@@ -36,6 +54,34 @@ export default function Login() {
 
                 {error && <div className="error-message">{error}</div>}
 
+                <form onSubmit={handleEmailSignIn} className="email-login-form">
+                    <div className="form-group">
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input
+                            type="password"
+                            placeholder="Heslo"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button type="submit" disabled={loading} className="email-btn">
+                        {loading ? "Prihlasujem..." : "Prihlásiť sa heslom"}
+                    </button>
+                </form>
+
+                <div className="divider">
+                    <span>ALEBO</span>
+                </div>
+
                 <button
                     onClick={handleGoogleSignIn}
                     disabled={loading}
@@ -46,7 +92,7 @@ export default function Login() {
                         alt="Google logo"
                         className="google-icon"
                     />
-                    {loading ? "Prihlasujem..." : "Prihlásiť sa cez Google"}
+                    Pre superadmina
                 </button>
 
                 <p className="return-home">

@@ -5,6 +5,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/admin/Dashboard";
+import UsersManagement from "./pages/admin/UsersManagement";
 import Analytics from "./components/Analytics";
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
           {/* Admin Protected Routes */}
           <Route path="/admin" element={<ProtectedRoute />}>
             <Route index element={<Dashboard />} />
-            {/* Future admin routes can be added here */}
+            <Route path="users" element={<UsersManagement />} />
           </Route>
         </Routes>
       </Router>

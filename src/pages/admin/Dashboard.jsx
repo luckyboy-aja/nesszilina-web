@@ -5,6 +5,8 @@ export default function Dashboard() {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
 
+    const isSuperAdmin = currentUser?.email === "andrej.bosik@gmail.com";
+
     const handleLogout = async () => {
         try {
             await logout();
@@ -20,21 +22,39 @@ export default function Dashboard() {
             <p>Vitaj, {currentUser?.email}</p>
             <div style={{ marginTop: "20px" }}>
                 <p>Toto je zabezpečená zóna len pre povolených administrátorov.</p>
-                <button
-                    onClick={handleLogout}
-                    style={{
-                        marginTop: "20px",
-                        padding: "10px 20px",
-                        backgroundColor: "var(--color-accent)",
-                        color: "var(--color-background)",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontWeight: "bold"
-                    }}
-                >
-                    Odhlásiť sa
-                </button>
+                <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+                    {isSuperAdmin && (
+                        <button
+                            onClick={() => navigate("/admin/users")}
+                            style={{
+                                padding: "10px 20px",
+                                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                color: "white",
+                                border: "1px solid rgba(255, 255, 255, 0.2)",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                                transition: "background 0.2s"
+                            }}
+                        >
+                            Správa administrátorov
+                        </button>
+                    )}
+                    <button
+                        onClick={handleLogout}
+                        style={{
+                            padding: "10px 20px",
+                            backgroundColor: "var(--color-accent)",
+                            color: "var(--color-background)",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        Odhlásiť sa
+                    </button>
+                </div>
             </div>
         </div>
     );
