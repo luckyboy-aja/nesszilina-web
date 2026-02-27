@@ -33,7 +33,7 @@ export default function Contact() {
                         <div className="info-icon">📍</div>
                         <div className="info-details">
                             <h3>Adresa</h3>
-                            <p>Závodská cesta 2961/4<br />010 01 Žilina<br />Slovenská republika</p>
+                            <p>Stará Hradská 24<br />010 03 Žilina - Budatín<br />Slovenská republika</p>
                         </div>
                     </div>
 
