@@ -58,7 +58,7 @@ export default function Contact() {
                         <div className="info-icon">🏢</div>
                         <div className="info-details">
                             <h3>Fakturačné údaje</h3>
-                            <p><strong>NESS Žilina, spol. s r.o.</strong><br />IČO: 31598404<br />DIČ: 2020448135<br />IČ DPH: SK2020448135</p>
+                            <p><strong>NESS Žilina, spol. s r.o.</strong><br />IČO: 31598404<br />DIČ: 2020444327<br />IČ DPH: SK2020444327</p>
                         </div>
                     </div>
 
