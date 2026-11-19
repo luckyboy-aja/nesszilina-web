@@ -75,19 +75,18 @@
 .nav-links::after {
   content: '';
   position: absolute;
+  bottom: 4px;
+  left: 1.5rem;
   width: 0;
   height: 2px;
   display: block;
-  margin-top: 5px;
-  right: 0;
   background: var(--color-accent);
   transition: width 0.3s ease;
   -webkit-transition: width 0.3s ease;
 }
 
 .nav-links:hover::after {
-  width: 100%;
-  left: 0;
+  width: calc(100% - 3rem);
   background: var(--color-accent);
 }
 

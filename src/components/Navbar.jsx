@@ -43,6 +43,9 @@ export default function Navbar() {
                         <a href="/#sluzby" className="nav-links" onClick={closeMobileMenu}>Služby</a>
                     </li>
                     <li className="nav-item">
+                        <a href="/#certifikacie" className="nav-links" onClick={closeMobileMenu}>Certifikácie</a>
+                    </li>
+                    <li className="nav-item">
                         <a href="/#o-nas" className="nav-links" onClick={closeMobileMenu}>O nás</a>
                     </li>
                     <li className="nav-item">

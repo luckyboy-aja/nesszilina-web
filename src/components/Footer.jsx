@@ -14,6 +14,7 @@ export default function Footer() {
                     <h4>Služby</h4>
                     <ul>
                         <li><a href="/#sluzby">IT Služby</a></li>
+                        <li><a href="/#certifikacie">Certifikácie (MS & Oracle)</a></li>
                         <li><a href="/#sluzby">Účtovníctvo</a></li>
                         <li><a href="/#sluzby">Obchod a sprostredkovanie</a></li>
                     </ul>
